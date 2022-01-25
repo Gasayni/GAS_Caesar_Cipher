@@ -66,8 +66,6 @@ public class Main {
         find_shift_brutForse(cryptoLine);
 
 
-
-
 //        2. Криптоанализ на основе статистических данных
 //        find_shift_cryptoAnalysis(cryptoLine);
     }
