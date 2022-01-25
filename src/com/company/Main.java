@@ -52,19 +52,20 @@ public class Main {
 
 
 //        Первым делом загрузим файл с обычным текстом
-        String s = readFile("C:\\Users\\Gasayni\\Desktop\\112.txt");
+        String s = readFile("original_text.txt");
 //        Зашифруем текст файла
         s_Crypto = toCrypto_noCase(s);
 //        Запишем файл с готовым зашифрованным текстом
-        writeFile("C:\\Users\\Gasayni\\Desktop\\113.txt");
+        writeFile("cipher_text.txt");
 //        Ну вот, у нас есть зашифрованный текст
 
 
-        String cryptoLine = readFile("C:\\Users\\Gasayni\\Desktop\\113.txt");
+        String cryptoLine = readFile("cipher_text.txt");
 //        Теперь нам нужно расшифровать его двумя способами
 //        1. brute force
         find_shift_brutForse(cryptoLine);
-        System.out.println();
+
+
 
 
 //        2. Криптоанализ на основе статистических данных
@@ -221,7 +222,7 @@ public class Main {
         shift = -1 * shift;
 
         s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на найденный "shift"
-        writeFile("C:\\Users\\Gasayni\\Desktop\\114.txt");
+        writeFile("decipher_text.txt");
     }
 
     public static void find_shift_brutForse(String cryptoLine) {
@@ -243,7 +244,7 @@ public class Main {
 //                System.out.println("\n\n\n");
                 System.out.println("Сдвиг шифра был = " + -1 * shift);
 
-                writeFile("C:\\Users\\Gasayni\\Desktop\\114.txt");
+                writeFile("decipher_text.txt");
                 return;
             }
         }
@@ -264,7 +265,7 @@ public class Main {
 //                System.out.println("\n\n\n");
                 System.out.println("Сдвиг шифра был = " + -1 * shift);
 
-                writeFile("C:\\Users\\Gasayni\\Desktop\\114.txt");
+                writeFile("decipher_text.txt");
                 return;
             }
         }
@@ -285,7 +286,7 @@ public class Main {
 //                System.out.println("\n\n\n");
                 System.out.println("Сдвиг шифра был = " + -1 * shift);
 
-                writeFile("C:\\Users\\Gasayni\\Desktop\\114.txt");
+                writeFile("decipher_text.txt");
                 return;
             }
         }
