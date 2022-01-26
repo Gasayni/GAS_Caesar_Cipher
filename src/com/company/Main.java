@@ -19,21 +19,17 @@ package com.company;
 и после этого попытаться использовать полученную статистику для криптоанализа зашифрованного текста.
 */
 
+// BrutForse
+// Другой способ проверки выборки: Длина слова не больше 25 (после пробела)
+// Другой способ проверки выборки: вероятность гласных и согласных под ряд
+// Другой способ проверки выборки: Если сомневаемся спрашиваем у пользователя читабельно ли
 
-// Пробел после точки должен быть с вероятностью
-// Пробел после запятой должен быть с вероятностью
-// Длина слова не больше 25 (псле пробела не больше 25)
-// Гласных и согласных под ряд вероятность
-// Если сомневаемся спрашиваем у пользователя нормально или нет
-//
-
-
+// Аналитическая хуйня
 // ключ не искать, каждый символ нужно отгадывать с вероятностью
 // считаем, что есть пару абзацев, короче нормальный текст
-// соеденяем 2 отсортированных мапов, в результате слияния получим мапу а-п, в-о, ...
+// соединяем 2 отсортированных мапов, в результате слияния получим мапу а-п, в-о, ...
 
-// нужна только папка SRC закинут в ГИТ
-
+// Общая инфа занятия с 24.01.2022
 // Спринг нужен для 95% работы
 
 import java.io.*;
@@ -224,7 +220,118 @@ public class Main {
     }
 
     public static void find_shift_brutForse(String cryptoLine) {
+//        Нужно посчитать вероятность ". "     ", "      " и "    " или "
 //        Чтобы ускорить выборку сдвига, сначала сделаем перебор среди наиболее популярных чисел
+        for (shift = -5; shift < 6; shift++) {
+            s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
+            String[] mas_Crypto = s_Crypto.split("");
+//            Считаем отношение "." к ". "
+            float amount_dot = 0;
+            float amount_dot_space = 0;
+            float amount_comma = 0;
+            float amount_comma_space = 0;
+
+            for (int i = 0; i < mas_Crypto.length; i++) {
+                if (mas_Crypto[i].equals(".")) {
+                    amount_dot++;
+                    if (mas_Crypto[i+1].equals(" ")) {
+                        amount_dot_space++;
+                    }
+                }
+                if (mas_Crypto[i].equals(",")) {
+                    amount_comma++;
+                    if (mas_Crypto[i+1].equals(" ")) {
+                        amount_comma_space++;
+                    }
+                }
+            }
+            /*System.out.println("Сдвиг: " + shift);
+            System.out.println("Зашифрованный текст:");
+            System.out.println(s_Crypto);
+            System.out.println("amount_dot = " + amount_dot);
+            System.out.println("amount_dot_space = " + amount_dot_space);
+            System.out.println("amount_comma = " + amount_comma);
+            System.out.println("amount_comma_space = " + amount_comma_space);
+            System.out.println();*/  // Проверка
+
+
+            if (amount_dot != 0 || amount_dot_space != 0 || amount_comma != 0 || amount_comma_space != 0) {
+                if (amount_dot / amount_dot_space < 1.2 || amount_comma / amount_comma_space < 1.2) {
+                    System.out.println("Сдвиг шифра был = " + -1 * shift);
+                    writeFile("decipher_text.txt");
+                    return;
+                }
+            }
+        }
+
+//        Если сдвиг не популярный, то проверяем остальные сдвиги
+        for (shift = -40; shift < -5; shift++) {
+            s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
+            String[] mas_Crypto = s_Crypto.split("");
+//            Считаем отношение "." к ". "
+            float amount_dot = 0;
+            float amount_dot_space = 0;
+            float amount_comma = 0;
+            float amount_comma_space = 0;
+
+            for (int i = 0; i < mas_Crypto.length; i++) {
+                if (mas_Crypto[i].equals(".")) {
+                    amount_dot++;
+                    if (mas_Crypto[i+1].equals(" ")) {
+                        amount_dot_space++;
+                    }
+                }
+                if (mas_Crypto[i].equals(",")) {
+                    amount_comma++;
+                    if (mas_Crypto[i+1].equals(" ")) {
+                        amount_comma_space++;
+                    }
+                }
+            }
+            if (amount_dot != 0 || amount_dot_space != 0 || amount_comma != 0 || amount_comma_space != 0) {
+                if (amount_dot / amount_dot_space < 1.2 || amount_comma / amount_comma_space < 1.2) {
+                    System.out.println("Сдвиг шифра был = " + -1 * shift + " или " + -1 *(41+shift));
+                    System.out.println("В данной программе это не важно, так как текст все равно правильно дешифруется");
+                    writeFile("decipher_text.txt");
+                    return;
+                }
+            }
+        }
+
+        /*for (shift = -6; shift < 41; shift++) {
+            s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
+            String[] mas_Crypto = s_Crypto.split("");
+//            Считаем отношение "." к ". "
+            float amount_dot = 0;
+            float amount_dot_space = 0;
+            float amount_comma = 0;
+            float amount_comma_space = 0;
+
+            for (int i = 0; i < mas_Crypto.length; i++) {
+                if (mas_Crypto[i].equals(".")) {
+                    amount_dot++;
+                    if (mas_Crypto[i+1].equals(" ")) {
+                        amount_dot_space++;
+                    }
+                }
+                if (mas_Crypto[i].equals(",")) {
+                    amount_comma++;
+                    if (mas_Crypto[i+1].equals(" ")) {
+                        amount_comma_space++;
+                    }
+                }
+            }
+            if (amount_dot != 0 || amount_dot_space != 0 || amount_comma != 0 || amount_comma_space != 0) {
+                if (amount_dot / amount_dot_space < 1.2 || amount_comma / amount_comma_space < 1.2) {
+                    System.out.print("Сдвиг шифра был = " + -1 * shift);
+                    writeFile("decipher_text.txt");
+                    return;
+                }
+            }
+        }*/  // До этого условия все равно не доходит
+//        Ну если совсем не получается определить, то выводим сообщение
+        System.out.println("Не могу определить сдвиг, попробуйте файл с большим текстом внутри");
+/*//        Чтобы ускорить выборку сдвига, сначала сделаем перебор среди наиболее популярных чисел
         for (shift = -5; shift < 6; shift++) {
             s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
             if (s_Crypto.contains(". ") && s_Crypto.contains(", ") && s_Crypto.contains(" и ") &&
@@ -241,12 +348,10 @@ public class Main {
 //                System.out.println(s_Crypto);
 //                System.out.println("\n\n\n");
                 System.out.println("Сдвиг шифра был = " + -1 * shift);
-
                 writeFile("decipher_text.txt");
                 return;
             }
         }
-
 //        Если сдвиг не популярный, то проверяем остальные сдвиги (в пределах разумного) сначала от -40 до -4
         for (shift = -40; shift < -5; shift++) {
             s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
@@ -267,7 +372,6 @@ public class Main {
                 return;
             }
         }
-
 //        Если сдвиг не популярный, то проверяем остальные сдвиги (в пределах разумного) потом от 6 до 40
         for (shift = 6; shift < 41; shift++) {
             s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
@@ -287,11 +391,11 @@ public class Main {
                 writeFile("decipher_text.txt");
                 return;
             }
-        }
-
-//        Ну если совсем не получается определить, то выводим сообщение
-        System.out.println("Не могу определить сдвиг, попробуйте файл с большим текстом внутри");
+        }*/
     }
+
+
+
 
     public static String toCrypto_noCase(String s) {
         //        У нас (по заданию) есть русский алфавит и знаки пунктуации (. , ”” : - ! ? ПРОБЕЛ).
