@@ -298,6 +298,7 @@ public class Main {
             }
         }
 
+        // До этого условия все равно не доходит
         /*for (shift = -6; shift < 41; shift++) {
             s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на "shift"
             String[] mas_Crypto = s_Crypto.split("");
