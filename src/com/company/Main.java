@@ -64,7 +64,7 @@ public class Main {
 //        Теперь нам нужно расшифровать его двумя способами
 //        1. brute force
         find_shift_brutForse(cryptoLine);
-
+        System.out.println();
 
 //        2. Криптоанализ на основе статистических данных
 //        find_shift_cryptoAnalysis(cryptoLine);
