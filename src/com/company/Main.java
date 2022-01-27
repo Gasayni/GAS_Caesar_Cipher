@@ -42,7 +42,16 @@ public class Main {
     static boolean b=true;
     static String s_user_file_path = "";
 
+    //  создадим список из букв и символов для дальнейшей работы
+    static String s_alphabet = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя.,\":-!? ";
+    static ArrayList<String> aAlphabet = new ArrayList<>(Arrays.asList(s_alphabet.split("")));
+
     public static void main(String[] args) {
+        map();
+        map_map();
+
+
+
         Scanner vv = new Scanner(System.in);
 
         System.out.println("Эта программа очень крутая на самом деле");
@@ -345,68 +354,29 @@ public class Main {
     }
 
     public static String toCrypto_noCase(String s) {
+//        char_char();          // другой метод - шифратор, предложенный менторами
+
+
         //        У нас (по заданию) есть русский алфавит и знаки пунктуации (. , ”” : - ! ? ПРОБЕЛ).
 //        !!! Пока на регистр не будем обращать внимание. Поэтому нужно все буквы перевести в нижний регистр
         String s_Lower = s.toLowerCase();
 
-//        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет Array list
-        ArrayList<String> alphabet = new ArrayList<>();
-        alphabet.add("а");
-        alphabet.add("б");
-        alphabet.add("в");
-        alphabet.add("г");
-        alphabet.add("д");
-        alphabet.add("е");
-        alphabet.add("ё");
-        alphabet.add("ж");
-        alphabet.add("з");
-        alphabet.add("и");
-        alphabet.add("й");
-        alphabet.add("к");
-        alphabet.add("л");
-        alphabet.add("м");
-        alphabet.add("н");
-        alphabet.add("о");
-        alphabet.add("п");
-        alphabet.add("р");
-        alphabet.add("с");
-        alphabet.add("т");
-        alphabet.add("у");
-        alphabet.add("ф");
-        alphabet.add("х");
-        alphabet.add("ц");
-        alphabet.add("ч");
-        alphabet.add("ш");
-        alphabet.add("щ");
-        alphabet.add("ь");
-        alphabet.add("ы");
-        alphabet.add("ъ");
-        alphabet.add("э");
-        alphabet.add("ю");
-        alphabet.add("я");
-        alphabet.add(".");
-        alphabet.add(",");
-        alphabet.add("\"");
-        alphabet.add(":");
-        alphabet.add("-");
-        alphabet.add("!");
-        alphabet.add("?");
-        alphabet.add(" ");
-
-
 //        Разрезаем наш текст по символам
         String[] s_mas = s_Lower.split("");
+
+
+
         String finish_line = "";
 //        Берем каждый символ нашего текста и проверяем его по списку, затем сдвигаем
         for (int i = 0; i < s_mas.length; i++) {
-            for (int j = 0; j < alphabet.size(); j++) {
-                if (s_mas[i].equals(alphabet.get(j))) {
+            for (int j = 0; j < aAlphabet.size(); j++) {
+                if (s_mas[i].equals(aAlphabet.get(j))) {
                     try {
-                        s_mas[i] = alphabet.get(j + shift);
+                        s_mas[i] = aAlphabet.get(j + shift);
                     } catch (IndexOutOfBoundsException e) {
                         if ((j + shift) < 0) {
-                            s_mas[i] = alphabet.get(j + shift + alphabet.size());
-                        } else s_mas[i] = alphabet.get(j + shift - alphabet.size());
+                            s_mas[i] = aAlphabet.get(j + shift + aAlphabet.size());
+                        } else s_mas[i] = aAlphabet.get(j + shift - aAlphabet.size());
                     }
                     break;
                 }
@@ -531,25 +501,81 @@ public class Main {
     }
 
 
-    /*String alphabet = "абвгдежзийклмнопрстуфхцчшщъыьэюя., ";
-    char[] chars = alphabet.toCharArray();
-    String str = "привет, как дела. ты приехал.";
-    //        String str =   "еж,ыюичшащашэюбщцшисшеж,юлщбц";
-    char[] strChars = str.toCharArray();
-    char[] result = new char[strChars.length];
 
-    int keyA = 25;
-    int keyB = chars.length - keyA;
+    public static void char_char() {
+//        Метод шифрует str на сдвиг keyA или keyB, в зависимости
+//        от выбранного в result[i] = chars[(j + keyB) % chars.length];
+        String alphabet = "абвгдежзийклмнопрстуфхцчшщъыьэюя., ";
+        char[] chars = alphabet.toCharArray();
+//        String str = "привет, как дела. ты приехал.";
+        String str =   "еж,ыюичшащашэюбщцшисшеж,юлщбц";
+        char[] strChars = str.toCharArray();
+        char[] result = new char[strChars.length];
+
+        int keyA = 25;
+        int keyB = chars.length - keyA;
         for (int i = 0; i < strChars.length; i++) {
-        char strChar = strChars[i];
-        for (int j = 0; j < chars.length; j++) {
-            char ch = chars[j];
-            if (strChar == ch) {
-                result[i] = chars[(j + keyA) % chars.length];
+            char strChar = strChars[i];
+            for (int j = 0; j < chars.length; j++) {
+                char ch = chars[j];
+                if (strChar == ch) {
+                    result[i] = chars[(j + keyB) % chars.length];
+                }
             }
         }
+        System.out.println(new String(result));
+    }
+    public static void map() {
+        System.out.println("Start method map_map()");
+        System.out.println();
+        // Initializing a Map of type HashMap
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "One");
+        map.put(3, "Three");
+        map.put(5, "Five");
+        map.put(7, "Seven");
+        map.put(9, "Nine");
+        System.out.println(map);
+
+        Map<Integer, String> mp = new HashMap<>();
+        mp.put(10, "Ten");
+        mp.put(30, "Thirty");
+        mp.put(50, "Fifty");
+
+        map.putAll(mp);
+
+        System.out.println(map);
+
+        System.out.println();
+        System.out.println("End method map()");
+        System.out.println();
+        System.out.println();
+    }
+    public static void map_map() {
+        System.out.println("Start method map_map()");
+        System.out.println();
+        // Initializing a Map of type HashMap
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "One");
+        map.put("3", "Three");
+        map.put("5", "Five");
+        map.put("7", "Seven");
+        map.put("9", "Nine");
+        System.out.println(map);
+
+        Map<String, String> mp = new HashMap<>();
+        mp.put("10", "Ten");
+        mp.put("30", "Thirty");
+        mp.put("50", "Fifty");
+
+        map.putAll(mp);
+
+        System.out.println(map);
+        System.out.println();
+        System.out.println("End method map_map()");
+        System.out.println();
+        System.out.println();
     }
 
-        System.out.println(new String(result));*/
 
 }
