@@ -60,7 +60,7 @@ public class Main {
         if (vv.next().equals("y")) {
             System.out.println("Выбери смещение символов по Шифру Цезаря. " +
                     "Знак минус означает смещение влево");
-            System.out.println("Только выбирай сердцем (от -40 до 40)");
+            System.out.println("\t\tТолько выбирай сердцем (от -40 до 40)");
             shift = vv.nextInt();
             // Если пользователь ввел 3 раза подряд неправильное число, то программа закроется
             if (three_try()) {
@@ -83,8 +83,8 @@ public class Main {
         String cryptoLine = readFile("cipher_text.txt");
 
         System.out.println("Каким способом ты хочешь расшифровать текст?");
-        System.out.println("Если Brute force (поиск грубой силой) набери \"1\"");
-        System.out.println("Если Криптоанализ на основе статистических данных набери \"2\"");
+        System.out.println("\tЕсли Brute force (поиск грубой силой) набери \"1\"");
+        System.out.println("\tЕсли Криптоанализ на основе статистических данных набери \"2\"");
 
         String one_or_two = vv.next();
         if (one_or_two.equals("1")) {
@@ -236,10 +236,10 @@ public class Main {
         //  Разрезаем наш текст по символам
         String[] mas_cryptoLine = cryptoLine.split("");                         // массив символов из текста
         //  записываем в Мап сколько раз встретился тот или иной символ в тексте
-        for (int i = 0; i < aAlphabet.size(); i++) {
-            for (int j = 0; j < mas_cryptoLine.length; j++) {
-                if (aAlphabet.get(i).equals(mas_cryptoLine[j])) {
-                    map_letters.put(aAlphabet.get(i), (map_letters.get(aAlphabet.get(i)) + 1));
+        for (String s : aAlphabet) {
+            for (String value : mas_cryptoLine) {
+                if (s.equals(value)) {
+                    map_letters.put(s, (map_letters.get(s) + 1));
                 }
             }
         }
@@ -255,7 +255,7 @@ public class Main {
 
 //      Убираем шелуху от "Optional[к=167]", нам нужна только цифра
             qw = max_symbol.split("\\[");   // max_symbol = "Optional[к=167]"
-            wq = qw[1].split("\\]");        // qw[1] = "к=167]"
+            wq = qw[1].split("]");        // qw[1] = "к=167]"
             wqw = wq[0].split("=");         // wq[0] = "к=167"
 
             //   Нашли самый частый символ - wqw[0], wqw[1] - количество повторений
@@ -275,22 +275,21 @@ public class Main {
         }
 
         // Записываем в строку
-        for (int i = 0; i < mas_cryptoLine.length; i++) {
-            s_Crypto += mas_cryptoLine[i];
+        for (String s : mas_cryptoLine) {
+            s_Crypto += s;
         }
         // Записываем расшифровку в файл
         writeFile("decipher_text.txt");
 
         // Выводим исправленный массив из 500 первых символов для проверки пользователем правильности расшифровки
-        System.out.println("Вот примерно так получается:");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\tВот примерно так получается:");
         for (int i = 0; i < 500; i++) {
             System.out.print(mas_cryptoLine[i]);
         }
         System.out.println("...");
 
-        System.out.println();
-        System.out.println("\n Если хочешь поменять стиль дешифровки, нажми \"y\"");
-        System.out.println("Если хочешь поменять символы местами в этой дешифровке, нажми \"r\"");
+        System.out.println("\n\n\tЕсли хочешь поменять стиль дешифровки, нажми \"y\"");
+        System.out.println("\tЕсли хочешь поменять символы местами в этой дешифровке, нажми \"r\"");
         String y_or_r = vvod.next();
         if (y_or_r.equals("y")) {
             speech_style_for_cryptoAnalysis(cryptoLine);
@@ -312,7 +311,7 @@ public class Main {
         String[] s_mas = s_Lower.split("");
 
 
-        String finish_line = "";
+        StringBuilder finish_line = new StringBuilder();
 //        Берем каждый символ нашего текста и проверяем его по списку, затем сдвигаем
         for (int i = 0; i < s_mas.length; i++) {
             for (int j = 0; j < aAlphabet.size(); j++) {
@@ -328,28 +327,26 @@ public class Main {
                 }
             }
 //             И сразу записываем символ в финальную строку
-            finish_line = finish_line + s_mas[i];
+            finish_line.append(s_mas[i]);
         }
-        return finish_line;
+        return finish_line.toString();
     }
 
     public static String readFile(String path) {
-        String s = "";
-        String line = "";
+        StringBuilder s = new StringBuilder();
+        String line;
         try {
             FileReader file = new FileReader(path);
             BufferedReader br = new BufferedReader(file);
             while ((line = br.readLine()) != null) {
-                s += line + "\n";    // Записываем все строки в "s"
+                s.append(line).append("\n");    // Записываем все строки в "s"
             }
             br.close();
             file.close();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return s;
+        return s.toString();
     }
 
     public static void writeFile(String path) {
@@ -464,36 +461,35 @@ public class Main {
         System.out.println("6 - Стиль Энди Вейера - \"Марсианин\"");
 
         switch (vvod.next()) {
-            case "0":
+            case "0" -> {
                 mas_symbol_frequency = symbol_frequency_easy.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            case "1":
+            }
+            case "1" -> {
                 mas_symbol_frequency = symbol_frequency_science.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            case "2":
+            }
+            case "2" -> {
                 mas_symbol_frequency = symbol_frequency_journalistic.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            case "3":
+            }
+            case "3" -> {
                 mas_symbol_frequency = symbol_frequency_official.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            case "4":
+            }
+            case "4" -> {
                 mas_symbol_frequency = symbol_frequency_artistic.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            case "5":
+            }
+            case "5" -> {
                 mas_symbol_frequency = symbol_frequency_conversational.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            case "6":
+            }
+            case "6" -> {
                 mas_symbol_frequency = symbol_frequency_martian.split("");
                 cryptoAnalysis(cryptoLine);
-                break;
-            default:
-                System.out.println("\n Спасибо за внимание. Ты лучший!");
+            }
+            default -> System.out.println("\n Спасибо за внимание. Ты лучший!");
         }
     }
 
