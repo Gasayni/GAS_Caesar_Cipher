@@ -45,6 +45,9 @@ public class Main {
     //  создадим список из букв и символов для дальнейшей работы
     static String s_alphabet = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя.,\":-!? ";
     static ArrayList<String> aAlphabet = new ArrayList<>(Arrays.asList(s_alphabet.split("")));
+    static String symbol_frequency_easy = " оетасинмвлдркяып,бьйуч.жгзхюшщёэцф-?ъ!\":";
+    static String[] mas_symbol_frequency = symbol_frequency_easy.split("");
+    static HashMap<String, Integer> map_letters = new HashMap<>();
 
     public static void main(String[] args) {
         Scanner vv = new Scanner(System.in);
@@ -87,11 +90,12 @@ public class Main {
         if (one_or_two.equals("1")) {
 //              1. brute force
             System.out.println("Выбран метод Brute force (брутфорс, поиск грубой силой)");
-            find_shift_brutForse(cryptoLine);
+            brutForse(cryptoLine);
         } else if (one_or_two.equals("2")) {
 //              2. Криптоанализ на основе статистических данных
             System.out.println("Выбран метод Криптоанализ на основе статистических данных");
-            find_shift_cryptoAnalysis(cryptoLine);
+            System.out.println("По умолчанию стоит самый простой стиль дешифровки \n");
+            cryptoAnalysis(cryptoLine);
         } else {
             // Если пользователь ввел 3 раза подряд неправильное число, то программа просто закроется
             three_try2(cryptoLine);
@@ -101,7 +105,7 @@ public class Main {
 
 
 
-    public static void find_shift_brutForse(String cryptoLine) {
+    public static void brutForse(String cryptoLine) {
 //        Нужно посчитать вероятность ". " и ", "
 //        Чтобы ускорить выборку сдвига, сначала сделаем перебор среди наиболее популярных чисел
         for (shift = -10; shift < 11; shift++) {
@@ -186,142 +190,7 @@ public class Main {
         System.out.println("Не могу определить сдвиг, попробуйте файл с большим текстом внутри");
     }
 
-    /*public static void find_shift_cryptoAnalysis(String cryptoLine) {
-//        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
-        HashMap<String, Integer> map_letters = new HashMap<>();
-        map_letters.put("а", 0);
-        map_letters.put("б", 0);
-        map_letters.put("в", 0);
-        map_letters.put("г", 0);
-        map_letters.put("д", 0);
-        map_letters.put("е", 0);
-        map_letters.put("ё", 0);
-        map_letters.put("ж", 0);
-        map_letters.put("з", 0);
-        map_letters.put("и", 0);
-        map_letters.put("й", 0);
-        map_letters.put("к", 0);
-        map_letters.put("л", 0);
-        map_letters.put("м", 0);
-        map_letters.put("н", 0);
-        map_letters.put("о", 0);
-        map_letters.put("п", 0);
-        map_letters.put("р", 0);
-        map_letters.put("с", 0);
-        map_letters.put("т", 0);
-        map_letters.put("у", 0);
-        map_letters.put("ф", 0);
-        map_letters.put("х", 0);
-        map_letters.put("ц", 0);
-        map_letters.put("ч", 0);
-        map_letters.put("ш", 0);
-        map_letters.put("щ", 0);
-        map_letters.put("ь", 0);
-        map_letters.put("ы", 0);
-        map_letters.put("ъ", 0);
-        map_letters.put("э", 0);
-        map_letters.put("ю", 0);
-        map_letters.put("я", 0);
-        map_letters.put(".", 0);
-        map_letters.put(",", 0);
-        map_letters.put("\"", 0);
-        map_letters.put(":", 0);
-        map_letters.put("-", 0);
-        map_letters.put("!", 0);
-        map_letters.put("?", 0);
-        map_letters.put(" ", 0);
-
-
-        // На самом деле можно сделать легче, точнее будет легко для моего текста,
-        // так как мы можем точно посчитать частоту вхождения каждого символа оригинального текста
-        // и просто приложить как кальку к зашифрованному.
-        // Но это скорее всего не будет работать к другим текстам, поэтому лучше сразу сделать нормальную,
-        // чтобы нигде нормально не работало :)
-
-
-
-//        Определяем статистику вхождения символов среднестатистического текста
-//            Средняя частота вхождения " " в нашем тексте 15%
-//            Средняя частота вхождения "о" в тексте 10,97%
-//            Средняя частота вхождения "е" в тексте 8,45%
-//            Средняя частота вхождения "а" в тексте 8,01%
-//            Средняя частота вхождения "и" в тексте 7,35%
-//            Средняя частота вхождения "н" в тексте 6,7%
-//            Средняя частота вхождения "т" в тексте 6,26%
-//            Средняя частота вхождения "с" в тексте 5,47%
-//            Средняя частота вхождения "р" в тексте 4,73%
-//            Средняя частота вхождения "в" в тексте 4,54%
-//            Средняя частота вхождения "л" в тексте 4,4%
-//            Средняя частота вхождения "к" в тексте 3,49%
-
-        // Для этого нужно отсортировать полученный мап из (буква - частота вхождения)
-//        Разрезаем наш текст по символам
-        String[] s_mas = cryptoLine.split("");
-        //        склько раз встретился тот или иной символ в тексте
-        for (int i = 0; i < aAlphabet.size(); i++) {
-            for (int j = 0; j < s_mas.length; j++) {
-                if (aAlphabet.get(i).equals(s_mas[j])) {
-                    map_letters.put(aAlphabet.get(i), (map_letters.get(aAlphabet.get(i)) + 1));
-                }
-            }
-        }
-
-
-        String q = map_letters.entrySet().stream().max(Map.Entry.comparingByValue()).toString();
-
-        String[] qw = q.split("\\[");
-        String[] wq = qw[1].split("\\]");
-        String[] wqw = wq[0].split("=");   // Нашли самый частый символ - " "
-//        Теперь мы знаем какой символ встретился чаще всего,
-// Теперь по идее нам нужно его заменить на пробел
-        int k = 0;
-        for (int i = 0; i < aAlphabet.size(); i++) {
-            if (aAlphabet.get(i).equals(wqw[0])) {
-                k = i;
-                break;
-            }
-        }
-
-
-
-
-
-
-        // Способ 1: находим самый частый символ в зашифрованном тексте и понимаем, что это " "
-
-//        letters.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).
-//                forEach(System.out::println); // или любой другой конечный метод
-
-
-
-//        System.out.println(wqw[0] + " " + wqw[1]);
-
-//        Теперь мы знаем какой символ встретился чаще всего,
-//        осталось только найти его положение и посчитать смещение относительно " "
-        int k = 0;
-        for (int i = 0; i < aAlphabet.size(); i++) {
-            if (aAlphabet.get(i).equals(wqw[0])) {
-                k = i;
-                break;
-            }
-        }
-//        Мы знаем, что " " находится под индексом 41 (последним) в alphabet
-//        Мы узнали под каким индексом находится наш наиболее часто встречающийся символ
-//        Т.о. мы можем узнать сдвиг шифра
-
-        if (k > aAlphabet.size() / 2) { // Проверяем сдвиг вправо или влево
-            shift = -1 * (aAlphabet.size() - k - 1);
-        } else shift = k + 1;                 // +1, так как в массивах счет начинается с 0
-//        System.out.println("shift = " + shift);
-
-//        Теперь обратно нужно сдвинуть на место, для этого меняем знак у shift
-        shift = -1 * shift;
-
-        s_Crypto = toCrypto_noCase(cryptoLine);  // Сдвинули каждый символ на найденный "shift"
-        writeFile("decipher_text.txt");
-    }*/
-
-    public static void find_shift_cryptoAnalysis(String cryptoLine) {
+/*    public static void find_shift_cryptoAnalysis(String cryptoLine) {
         String[] qw, wq, wqw;
         ArrayList<Integer> after_replace = new ArrayList<>();   // сюда будут заноситься символы, которые уже заменены
 
@@ -378,13 +247,19 @@ public class Main {
 
         // Вообще хорошо было бы, чтобы программа сама подбирала последующие символы на основе популярных слов
 
+
+
+        // Есть предположение, что сбивается статистика потому что частота
+        // вхождения символов у каких-то одинаковая из-за этого путаница
+
 //        Определяем статистику вхождения символов среднестатистического текста
         String symbol_frequency_easy = " оетасинвмлдркяыпб,ьйуч.гжзхюшщэёцф-?ъ!\":";
         String symbol_frequency_middle = " оетаинсвлрмдку,ьяпыбчг.зжйхюш-цщэфё:?!ъ\"";
-        String symbol_frequency_mars = " оеатнисрлвмдпкуяь.зы,бчгйжхюшэцщф-?:!ъё\"";
+        String symbol_frequency_martian = " оеатнисрлвмдпкуяь.зы,бчгйжхюшэцщф-?:!ъё\"";
+
+
         // хорошо бы добавить для разных стилей, штук 20 разных
         // хорошо если пользователю будет возможноть поменять символы самостоятельно
-
         // пользователю будет дана возможность выбрать наиболее понятную расшифровку
         // и в дополнение он сможет поменять испорченные символы
 
@@ -445,6 +320,120 @@ public class Main {
 
         writeFile("decipher_text.txt");
         System.out.println("Сделано, наслаждайтесь");
+    }*/
+
+    public static void cryptoAnalysis(String cryptoLine) {
+        Scanner vvod = new Scanner(System.in);
+
+        // Вообще хорошо было бы, чтобы программа сама подбирала последующие символы на основе популярных слов
+
+        // Есть предположение, что сбивается статистика потому что частота
+        // вхождения символов у каких-то одинаковая из-за этого путаница
+        // ПОДТВЕРДИЛОСЬ!!!    НУЖНО ИСПРАВИТЬ
+        // либо текст побольше, либо дополнить условиями
+
+        // хорошо если пользователю будет возможноть поменять символы самостоятельно
+
+
+        // пользователю будет дана возможность выбрать наиболее понятную расшифровку
+
+
+        //        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
+        map_letters.put("а", 0);
+        map_letters.put("б", 0);
+        map_letters.put("в", 0);
+        map_letters.put("г", 0);
+        map_letters.put("д", 0);
+        map_letters.put("е", 0);
+        map_letters.put("ё", 0);
+        map_letters.put("ж", 0);
+        map_letters.put("з", 0);
+        map_letters.put("и", 0);
+        map_letters.put("й", 0);
+        map_letters.put("к", 0);
+        map_letters.put("л", 0);
+        map_letters.put("м", 0);
+        map_letters.put("н", 0);
+        map_letters.put("о", 0);
+        map_letters.put("п", 0);
+        map_letters.put("р", 0);
+        map_letters.put("с", 0);
+        map_letters.put("т", 0);
+        map_letters.put("у", 0);
+        map_letters.put("ф", 0);
+        map_letters.put("х", 0);
+        map_letters.put("ц", 0);
+        map_letters.put("ч", 0);
+        map_letters.put("ш", 0);
+        map_letters.put("щ", 0);
+        map_letters.put("ь", 0);
+        map_letters.put("ы", 0);
+        map_letters.put("ъ", 0);
+        map_letters.put("э", 0);
+        map_letters.put("ю", 0);
+        map_letters.put("я", 0);
+        map_letters.put(".", 0);
+        map_letters.put(",", 0);
+        map_letters.put("\"", 0);
+        map_letters.put(":", 0);
+        map_letters.put("-", 0);
+        map_letters.put("!", 0);
+        map_letters.put("?", 0);
+        map_letters.put(" ", 0);
+
+        // нужно отсортировать полученный Мап по убыванию частоты вхождения, (чтобы первый элементы был максимальным по значению)
+        //  Разрезаем наш текст по символам
+        String[] mas_cryptoLine = cryptoLine.split("");                         // массив символов из текста
+        //  записываем в Мап сколько раз встретился тот или иной символ в тексте
+        for (int i = 0; i < aAlphabet.size(); i++) {
+            for (int j = 0; j < mas_cryptoLine.length; j++) {
+                if (aAlphabet.get(i).equals(mas_cryptoLine[j])) {
+                    map_letters.put(aAlphabet.get(i), (map_letters.get(aAlphabet.get(i)) + 1));
+                }
+            }
+        }
+
+        String[] qw, wq, wqw;
+        ArrayList<Integer> after_replace = new ArrayList<>();   // сюда будут заноситься символы, которые уже заменены
+//        after_replace.clear();
+
+        // Повторяем пока не заменим все символы в тексте
+        for (int i = 0; i < aAlphabet.size(); i++) {
+//      находим самый частый символ в Мап-е с частотой вхождения символов в тексте
+            String max_symbol = map_letters.entrySet().stream().max(Map.Entry.comparingByValue()).toString();
+
+//      Убираем шелуху от "Optional[к=167]", нам нужна только цифра
+            qw = max_symbol.split("\\[");   // max_symbol = "Optional[к=167]"
+            wq = qw[1].split("\\]");        // qw[1] = "к=167]"
+            wqw = wq[0].split("=");         // wq[0] = "к=167"
+
+            //   Нашли самый частый символ - wqw[0], wqw[1] - количество повторений
+//      Теперь мы знаем какой символ встретился чаще всего,
+//      Теперь нам нужно заменить каждый такой символ в тексте на самый частый по статистике
+            for (int j = 0; j < mas_cryptoLine.length; j++) {
+                // Если в зашифрованном массиве символов всего текста встретится символ с максимальным вхождением
+                // И Нам не нужно менять то, что уже поменяно
+                if (mas_cryptoLine[j].equals(wqw[0]) && !after_replace.contains(j)) {
+                    // То заменяем его на символ с максимальным вхождением по статистике
+                    mas_cryptoLine[j] = mas_symbol_frequency[i];
+                    after_replace.add(j);   // сюда будут заноситься номера поменянных ячеек, чтобы больше их не менять
+                }
+            }
+//        Теперь нам нужно удалить максимальную Map строку по ключу - для того чтобы потом найти следующую максимальную
+            map_letters.remove(wqw[0]);
+        }
+
+        // Выводим исправленный массив
+        for (int i = 0; i < mas_cryptoLine.length; i++) {
+            System.out.print(mas_cryptoLine[i]);
+        }
+//        writeFile("cipher_text.txt");
+
+        System.out.println();
+        System.out.println("\n\n Если хотите поменять стиль дешифровки, нажмите \"y\"");
+        if (vvod.next().equals("y")) {
+            speech_style_for_cryptoAnalysis(cryptoLine);
+        }
     }
 
     public static String toCrypto_noCase(String s) {
@@ -575,22 +564,77 @@ public class Main {
             System.out.println("Если Криптоанализ на основе статистических данных наберите \"2\"");
             one_or_two = vv.next();
             if (one_or_two.equals("1")) {
-                find_shift_brutForse(cryptoLine);
+                brutForse(cryptoLine);
                 break;
             } else if (one_or_two.equals("2")) {
-                find_shift_cryptoAnalysis(cryptoLine);
+                cryptoAnalysis(cryptoLine);
                 break;
             }
         }
         if (one_or_two.equals("1")) {
             System.out.println("Выбран метод Brute force (брутфорс, поиск грубой силой)");
-            find_shift_brutForse(cryptoLine);
+            brutForse(cryptoLine);
         } else if (one_or_two.equals("2")) {
             System.out.println("Выбран метод Криптоанализ на основе статистических данных");
-            find_shift_cryptoAnalysis(cryptoLine);
+            cryptoAnalysis(cryptoLine);
         } else {
             System.out.println("Извините, вы, видимо, слишком умны для этой программы. " +
                     "Попробуйте пожалуйста снова.");
+        }
+    }
+
+    public static void speech_style_for_cryptoAnalysis(String cryptoLine) {
+        Scanner vvod = new Scanner(System.in);
+
+        //  хорошо бы добавить для разных стилей речи
+        String symbol_frequency_science = " оеитнасрвлкмдпуыячз,ьйхбг.жющцфэшё-ъ:!\"?";
+        String symbol_frequency_journalistic = " оеаинтсрвлкмдпыуязьгб,чй.жхцшюэфщ-:?!ъ\"ё";
+        String symbol_frequency_official = " оеианстрвлкмпдуяыгб,йьзч.жхцюшщфэ-ъ:ё!\"?";
+        String symbol_frequency_artistic = " оаеинтслрвкмпудя,ыьг.бзйхчшжюцщ-!эф:?ёъ\"";
+        String symbol_frequency_conversational = " оаетинсвлркмдуп,ябьы.згчйхшжю-!щц?эф:ёъ\"";
+        String symbol_frequency_martian = " оеатнисрлвмдпкуяь.зы,бчгйжхюшэцщф-?:!ъё\"";
+
+
+        System.out.println("Выберите другие типы дешифровки по стилям речи:");
+        System.out.println("0 - Простой стиль");
+        System.out.println("1 - Научный стиль");
+        System.out.println("2 - Публицистический стиль");
+        System.out.println("3 - Официально-деловой стиль");
+        System.out.println("4 - Художественный стиль");
+        System.out.println("5 - Разговорный стиль");
+        System.out.println("6 - Стиль Энди Вейера - \"Марсианин\"");
+
+        switch (vvod.next()) {
+            case "0":
+                mas_symbol_frequency = symbol_frequency_easy.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            case "1":
+                mas_symbol_frequency = symbol_frequency_science.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            case "2":
+                mas_symbol_frequency = symbol_frequency_journalistic.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            case "3":
+                mas_symbol_frequency = symbol_frequency_official.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            case "4":
+                mas_symbol_frequency = symbol_frequency_artistic.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            case "5":
+                mas_symbol_frequency = symbol_frequency_conversational.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            case "6":
+                mas_symbol_frequency = symbol_frequency_martian.split("");
+                cryptoAnalysis(cryptoLine);
+                break;
+            default:
+                System.out.println("\n Спасибо за внимание.");
         }
     }
 }
