@@ -46,16 +46,17 @@ public class Main {
     static String s_alphabet = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя.,\":-!? ";
     static ArrayList<String> aAlphabet = new ArrayList<>(Arrays.asList(s_alphabet.split("")));
     static String symbol_frequency_easy = " оетасинмвлдркяып,бьйуч.жгзхюшщёэцф-?ъ!\":";
+    static String symbol_frequency_user_style="";
     static String[] mas_symbol_frequency = symbol_frequency_easy.split("");
     static HashMap<String, Integer> map_letters = new HashMap<>();
 
     public static void main(String[] args) {
         Scanner vv = new Scanner(System.in);
 
-        System.out.print("Эта программа очень крутая на самом деле, ");
-        System.out.println("тут можно не только расшифровать текст, но и зашифровать.");
-        System.out.print("\t Если хочешь зашифровать текст нажми 'y', ");
-        System.out.println("продолжить по умолчанию - любой другой символ");
+        System.out.println("Эта программа очень крутая на самом деле, " +
+                "тут можно не только расшифровать текст, но и зашифровать.");
+        System.out.println("\t Если хочешь зашифровать текст нажми 'y', " +
+                "продолжить по умолчанию - любой другой символ");
         // Проверка на запуск метода шифрования
         if (vv.next().equals("y")) {
             System.out.println("Выбери смещение символов по Шифру Цезаря. " +
@@ -72,6 +73,8 @@ public class Main {
                     // дается 2 попытки ввести правильно путь,
                     // если они исчерпаны, то путь выбирается по умолчанию
                     tryCatch_openFile();
+                    System.out.println("Файл зашифрован и находится в корне программы " +
+                            "под названием \"cipher_text.txt\"");
                 }
             }
             s_original = readFile("original_text.txt");
@@ -388,6 +391,28 @@ public class Main {
         }
     }
 
+    public static String tryCatch_openFile2() {
+        Scanner vv = new Scanner(System.in);
+
+        s_user_file_path = vv.next();
+        try {
+            return readFile(s_user_file_path);
+        } catch (Exception e) {
+            System.out.println("Что-то пошло не так, скорее всего путь указан не верно.");
+            System.out.println("Попробуй снова");
+            System.out.println("Введи путь до твоего текстового файла");
+            System.out.println("Вот пример: C:\\Users\\User\\Desktop\\name.txt");
+            s_user_file_path = vv.next();
+            try {
+                return readFile(s_user_file_path);
+            } catch (Exception ee) {
+                System.out.print("Что-то снова пошло не так, скорее всего путь введен не верно. ");
+                System.out.println("Тогда открою свой файл");
+                return readFile("original_text.txt");
+            }
+        }
+    }
+
     public static boolean three_try() {
         // Если пользователь ввел 3 раза подряд неправильное число, то программа закрывается
         Scanner vv = new Scanner(System.in);
@@ -459,6 +484,7 @@ public class Main {
         System.out.println("4 - Художественный стиль");
         System.out.println("5 - Разговорный стиль");
         System.out.println("6 - Стиль Энди Вейера - \"Марсианин\"");
+        System.out.println("7 - Свой стиль");
 
         switch (vvod.next()) {
             case "0" -> {
@@ -489,6 +515,10 @@ public class Main {
                 mas_symbol_frequency = symbol_frequency_martian.split("");
                 cryptoAnalysis(cryptoLine);
             }
+            case "7" -> {
+                mas_symbol_frequency = user_speech_style().split("");
+                cryptoAnalysis(cryptoLine);
+            }
             default -> System.out.println("\n Спасибо за внимание. Ты лучший!");
         }
     }
@@ -509,5 +539,96 @@ public class Main {
             }
         }
         cryptoAnalysis(cryptoLine);
+    }
+
+    public static String user_speech_style() {
+        //  Определяем статистику вхождения символов по стилю пользователя
+        System.out.println("\t Введи путь до твоего текстового файла");
+        System.out.println("\t\t Вот пример: C:\\Users\\User\\Desktop\\name.txt");
+        // дается 2 попытки ввести правильно путь,
+        // если они исчерпаны, то путь выбирается по умолчанию
+        String s_user_style = tryCatch_openFile2();
+        System.out.println("Файл принят!\n");
+
+        //  !!! Пока на регистр не будем обращать внимание. Поэтому нужно все буквы перевести в нижний регистр
+        s_user_style = s_user_style.toLowerCase();
+
+        //        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
+        HashMap<String, Integer> map_letters_user_style = new HashMap<>();
+        map_letters_user_style.put("а", 0);
+        map_letters_user_style.put("б", 0);
+        map_letters_user_style.put("в", 0);
+        map_letters_user_style.put("г", 0);
+        map_letters_user_style.put("д", 0);
+        map_letters_user_style.put("е", 0);
+        map_letters_user_style.put("ё", 0);
+        map_letters_user_style.put("ж", 0);
+        map_letters_user_style.put("з", 0);
+        map_letters_user_style.put("и", 0);
+        map_letters_user_style.put("й", 0);
+        map_letters_user_style.put("к", 0);
+        map_letters_user_style.put("л", 0);
+        map_letters_user_style.put("м", 0);
+        map_letters_user_style.put("н", 0);
+        map_letters_user_style.put("о", 0);
+        map_letters_user_style.put("п", 0);
+        map_letters_user_style.put("р", 0);
+        map_letters_user_style.put("с", 0);
+        map_letters_user_style.put("т", 0);
+        map_letters_user_style.put("у", 0);
+        map_letters_user_style.put("ф", 0);
+        map_letters_user_style.put("х", 0);
+        map_letters_user_style.put("ц", 0);
+        map_letters_user_style.put("ч", 0);
+        map_letters_user_style.put("ш", 0);
+        map_letters_user_style.put("щ", 0);
+        map_letters_user_style.put("ь", 0);
+        map_letters_user_style.put("ы", 0);
+        map_letters_user_style.put("ъ", 0);
+        map_letters_user_style.put("э", 0);
+        map_letters_user_style.put("ю", 0);
+        map_letters_user_style.put("я", 0);
+        map_letters_user_style.put(".", 0);
+        map_letters_user_style.put(",", 0);
+        map_letters_user_style.put("\"", 0);
+        map_letters_user_style.put(":", 0);
+        map_letters_user_style.put("-", 0);
+        map_letters_user_style.put("!", 0);
+        map_letters_user_style.put("?", 0);
+        map_letters_user_style.put(" ", 0);
+
+        // Для этого нужно отсортировать полученный мап из (буква - частота вхождения)
+//        Разрезаем наш текст по символам
+        String[] mas_user = s_user_style.split("");
+//        сколько раз встретился тот или иной символ в тексте
+        for (String s : aAlphabet) {
+            for (String value : mas_user) {
+                if (s.equals(value)) {
+                    map_letters_user_style.put(s,
+                            (map_letters_user_style.get(s) + 1));
+                }
+            }
+        }
+
+        //        Показать Мап отсортированный по убыванию
+        map_letters.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).
+                forEach(System.out::println); // или любой другой конечный метод
+
+        String[] qw, wq, wqw;
+        for (int i = 0; i < aAlphabet.size(); i++) {
+//      находим самый частый символ в Мап-е с частотой вхождения символов в тексте
+            String max_symbol = map_letters_user_style.entrySet().stream().max(Map.Entry.comparingByValue()).toString();
+
+//      Убираем шелуху от "Optional[к=167]", нам нужна только цифра
+            qw = max_symbol.split("\\[");   // max_symbol = "Optional[к=167]"
+            wq = qw[1].split("]");        // qw[1] = "к=167]"
+            wqw = wq[0].split("=");         // wq[0] = "к=167"
+            //   Нашли самый частый символ - wqw[0], wqw[1] - количество повторений
+            symbol_frequency_user_style += wqw[0];
+//        Теперь нам нужно удалить максимальную Map строку по ключу - для того чтобы потом найти следующую максимальную
+            map_letters_user_style.remove(wqw[0]);
+        }
+
+        return symbol_frequency_user_style;
     }
 }
