@@ -30,7 +30,7 @@ package com.company;
 // соединяем 2 отсортированных мапов, в результате слияния получим мапу а-п, в-о, ...
 
 // Общая инфа занятия с 24.01.2022
-// Спринг нужен для 95% работы
+//      Спринг нужен для 95% работы
 
 import java.io.*;
 import java.util.*;
@@ -52,23 +52,23 @@ public class Main {
     public static void main(String[] args) {
         Scanner vv = new Scanner(System.in);
 
-        System.out.println("Эта программа очень крутая на самом деле");
-        System.out.println("Тут можно не только расшифровать текст, но и зашифровать");
-        System.out.println("Если хотите зашифровать текст нажмите 'y'");
-        System.out.println("Продолжить по умолчанию - любой другой символ");
+        System.out.print("Эта программа очень крутая на самом деле, ");
+        System.out.println("тут можно не только расшифровать текст, но и зашифровать.");
+        System.out.print("\t Если хочешь зашифровать текст нажми 'y', ");
+        System.out.println("продолжить по умолчанию - любой другой символ");
         // Проверка на запуск метода шифрования
         if (vv.next().equals("y")) {
-            System.out.println("Выберите смещение символов по Шифру Цезаря. " +
+            System.out.println("Выбери смещение символов по Шифру Цезаря. " +
                     "Знак минус означает смещение влево");
-            System.out.println("Только выбирайте пожалуйста от -40 до 40");
+            System.out.println("Только выбирай сердцем (от -40 до 40)");
             shift = vv.nextInt();
             // Если пользователь ввел 3 раза подряд неправильное число, то программа закроется
             if (three_try()) {
-                System.out.println("Если хотите зашифровать свой собственный текст нажмите 'y'");
+                System.out.println("Если хочешь зашифровать свой собственный текст нажмите 'y'");
                 // Проверка на желание пользователя загрузить собственный текст
                 if (vv.next().equals("y")) {
-                    System.out.println("Введите путь до вашего текстового файла файла");
-                    System.out.println("Пример: C:\\Users\\User\\Desktop\\name.txt");
+                    System.out.println("\t Введи путь до твоего текстового файла");
+                    System.out.println("\t\t Вот пример: C:\\Users\\User\\Desktop\\name.txt");
                     // дается 2 попытки ввести правильно путь,
                     // если они исчерпаны, то путь выбирается по умолчанию
                     tryCatch_openFile();
@@ -82,14 +82,14 @@ public class Main {
 //      Расшифровка текста начинается тут
         String cryptoLine = readFile("cipher_text.txt");
 
-        System.out.println("Каким способом вы хотите расшифровать текст?");
-        System.out.println("Если Brute force (брутфорс, поиск грубой силой) наберите \"1\"");
-        System.out.println("Если Криптоанализ на основе статистических данных наберите \"2\"");
+        System.out.println("Каким способом ты хочешь расшифровать текст?");
+        System.out.println("Если Brute force (поиск грубой силой) набери \"1\"");
+        System.out.println("Если Криптоанализ на основе статистических данных набери \"2\"");
 
         String one_or_two = vv.next();
         if (one_or_two.equals("1")) {
 //              1. brute force
-            System.out.println("Выбран метод Brute force (брутфорс, поиск грубой силой)");
+            System.out.println("Выбран метод Brute force (поиск грубой силой)");
             brutForse(cryptoLine);
         } else if (one_or_two.equals("2")) {
 //              2. Криптоанализ на основе статистических данных
@@ -101,8 +101,6 @@ public class Main {
             three_try2(cryptoLine);
         }
     }
-
-
 
 
     public static void brutForse(String cryptoLine) {
@@ -131,17 +129,6 @@ public class Main {
                     }
                 }
             }
-
-
-            /*System.out.println("Сдвиг: " + shift);
-            System.out.println("Зашифрованный текст:");
-            System.out.println(s_Crypto);
-            System.out.println("amount_dot = " + amount_dot);
-            System.out.println("amount_dot_space = " + amount_dot_space);
-            System.out.println("amount_comma = " + amount_comma);
-            System.out.println("amount_comma_space = " + amount_comma_space);
-            System.out.println();*/  // Проверка
-
 
             if (amount_dot != 0 || amount_dot_space != 0 || amount_comma != 0 || amount_comma_space != 0) {
                 if (amount_dot / amount_dot_space < 1.2 || amount_comma / amount_comma_space < 1.2) {
@@ -180,147 +167,15 @@ public class Main {
             if (amount_dot != 0 || amount_dot_space != 0 || amount_comma != 0 || amount_comma_space != 0) {
                 if (amount_dot / amount_dot_space < 1.2 || amount_comma / amount_comma_space < 1.2) {
                     System.out.println("Сдвиг шифра был = " + -1 * shift + " или " + -1 * (41 + shift));
-                    System.out.println("В данной программе это не важно, так как текст все равно правильно дешифруется");
+                    System.out.println("В данной программе он круговой, текст все равно правильно дешифруется");
                     writeFile("decipher_text.txt");
                     return;
                 }
             }
         }
 //        Ну если совсем не получается определить, то выводим сообщение
-        System.out.println("Не могу определить сдвиг, попробуйте файл с большим текстом внутри");
+        System.out.println("Не могу определить сдвиг, попробуй файл с большим текстом внутри");
     }
-
-/*    public static void find_shift_cryptoAnalysis(String cryptoLine) {
-        String[] qw, wq, wqw;
-        ArrayList<Integer> after_replace = new ArrayList<>();   // сюда будут заноситься символы, которые уже заменены
-
-//        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
-        HashMap<String, Integer> map_letters = new HashMap<>();
-        map_letters.put("а", 0);
-        map_letters.put("б", 0);
-        map_letters.put("в", 0);
-        map_letters.put("г", 0);
-        map_letters.put("д", 0);
-        map_letters.put("е", 0);
-        map_letters.put("ё", 0);
-        map_letters.put("ж", 0);
-        map_letters.put("з", 0);
-        map_letters.put("и", 0);
-        map_letters.put("й", 0);
-        map_letters.put("к", 0);
-        map_letters.put("л", 0);
-        map_letters.put("м", 0);
-        map_letters.put("н", 0);
-        map_letters.put("о", 0);
-        map_letters.put("п", 0);
-        map_letters.put("р", 0);
-        map_letters.put("с", 0);
-        map_letters.put("т", 0);
-        map_letters.put("у", 0);
-        map_letters.put("ф", 0);
-        map_letters.put("х", 0);
-        map_letters.put("ц", 0);
-        map_letters.put("ч", 0);
-        map_letters.put("ш", 0);
-        map_letters.put("щ", 0);
-        map_letters.put("ь", 0);
-        map_letters.put("ы", 0);
-        map_letters.put("ъ", 0);
-        map_letters.put("э", 0);
-        map_letters.put("ю", 0);
-        map_letters.put("я", 0);
-        map_letters.put(".", 0);
-        map_letters.put(",", 0);
-        map_letters.put("\"", 0);
-        map_letters.put(":", 0);
-        map_letters.put("-", 0);
-        map_letters.put("!", 0);
-        map_letters.put("?", 0);
-        map_letters.put(" ", 0);
-
-
-        // На самом деле можно сделать легче, точнее будет легко для моего текста,
-        // так как мы можем точно посчитать частоту вхождения каждого символа оригинального текста
-        // и просто приложить как кальку к зашифрованному.
-        // Но это скорее всего не будет работать к другим текстам, поэтому лучше сразу сделать нормальную,
-        // чтобы нигде нормально не работало :)
-
-        // Вообще хорошо было бы, чтобы программа сама подбирала последующие символы на основе популярных слов
-
-
-
-        // Есть предположение, что сбивается статистика потому что частота
-        // вхождения символов у каких-то одинаковая из-за этого путаница
-
-//        Определяем статистику вхождения символов среднестатистического текста
-        String symbol_frequency_easy = " оетасинвмлдркяыпб,ьйуч.гжзхюшщэёцф-?ъ!\":";
-        String symbol_frequency_middle = " оетаинсвлрмдку,ьяпыбчг.зжйхюш-цщэфё:?!ъ\"";
-        String symbol_frequency_martian = " оеатнисрлвмдпкуяь.зы,бчгйжхюшэцщф-?:!ъё\"";
-
-
-        // хорошо бы добавить для разных стилей, штук 20 разных
-        // хорошо если пользователю будет возможноть поменять символы самостоятельно
-        // пользователю будет дана возможность выбрать наиболее понятную расшифровку
-        // и в дополнение он сможет поменять испорченные символы
-
-
-        ArrayList<String> aAlphabet = new ArrayList<>(Arrays.asList(s_alphabet.split("")));
-
-        // Для этого нужно отсортировать полученный мап из (буква - частота вхождения)
-//        Разрезаем наш текст по символам
-        String[] mas_cryptoLine = cryptoLine.split("");                         // массив символов из текста
-        String[] mas_symbol_frequency_easy = symbol_frequency_easy.split("");   // отсортированный массив символов из букв
-
-//        записываем в Мап сколько раз встретился тот или иной символ в тексте
-        for (int i = 0; i < aAlphabet.size(); i++) {
-            for (int j = 0; j < mas_cryptoLine.length; j++) {
-                if (aAlphabet.get(i).equals(mas_cryptoLine[j])) {
-                    map_letters.put(aAlphabet.get(i), (map_letters.get(aAlphabet.get(i)) + 1));
-                }
-            }
-        }       // Теперь у нас есть Мап с частотой вхождения символов в тексте
-
-
-        // Повторяем пока не заменим все символы в тексте
-
-        for (int i = 0; i < aAlphabet.size(); i++) {
-//      находим самый частый символ в Мап-е с частотой вхождения символов в тексте
-            String max_symbol = map_letters.entrySet().stream().max(Map.Entry.comparingByValue()).toString();
-
-//      Убираем шелуху
-            qw = max_symbol.split("\\[");   // max_symbol = "Optional[к=167]"
-            wq = qw[1].split("\\]");        // qw[1] = "к=167]"
-            wqw = wq[0].split("=");         // wq[0] = "к=167"
-
-            //   Нашли самый частый символ - wqw[0], wqw[1] - количество повторений
-//      Теперь мы знаем какой символ встретился чаще всего,
-//      Теперь нам нужно заменить каждый такой символ в тексте на самый частый по статистике
-
-            for (int j = 0; j < mas_cryptoLine.length; j++) {
-                // Если в зашифрованном массиве символов всего текста встретится символ с максимальным вхождением
-                // И Нам не нужно менять то, что уже поменяно
-                if (mas_cryptoLine[j].equals(wqw[0]) && !after_replace.contains(j)) {
-                    // То заменяем его на символ с максимальным вхождением по статистике
-                    mas_cryptoLine[j] = mas_symbol_frequency_easy[i];
-                    after_replace.add(j);                       // сюда будут заноситься номера поменянных ячеек
-
-                }
-            }
-//        Теперь нам нужно удалить максимальную Map строку по ключу,
-//        чтобы найти следующую максимальную
-            map_letters.remove(wqw[0]);
-        }
-
-        s_Crypto = "";
-        // записываем исправленный массив всех символов текста в строку, чтобы записать в файл
-        for (int i = 0; i < mas_cryptoLine.length; i++) {
-            s_Crypto += mas_cryptoLine[i];
-        }
-
-
-        writeFile("decipher_text.txt");
-        System.out.println("Сделано, наслаждайтесь");
-    }*/
 
     public static void cryptoAnalysis(String cryptoLine) {
         Scanner vvod = new Scanner(System.in);
@@ -329,13 +184,9 @@ public class Main {
 
         // Есть предположение, что сбивается статистика потому что частота
         // вхождения символов у каких-то одинаковая из-за этого путаница
-        // ПОДТВЕРДИЛОСЬ!!!    НУЖНО ИСПРАВИТЬ
-        // либо текст побольше, либо дополнить условиями
+        // ПОДТВЕРДИЛОСЬ!!!    НУЖНО ИСПРАВИТЬ - либо текст побольше, либо дополнить условиями
 
-        // хорошо если пользователю будет возможноть поменять символы самостоятельно
-
-
-        // пользователю будет дана возможность выбрать наиболее понятную расшифровку
+        // хорошо если пользователю будет дана возможность поменять символы самостоятельно
 
 
         //        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
@@ -423,17 +274,30 @@ public class Main {
             map_letters.remove(wqw[0]);
         }
 
-        // Выводим исправленный массив
+        // Записываем в строку
         for (int i = 0; i < mas_cryptoLine.length; i++) {
+            s_Crypto += mas_cryptoLine[i];
+        }
+        // Записываем расшифровку в файл
+        writeFile("decipher_text.txt");
+
+        // Выводим исправленный массив из 500 первых символов для проверки пользователем правильности расшифровки
+        System.out.println("Вот примерно так получается:");
+        for (int i = 0; i < 500; i++) {
             System.out.print(mas_cryptoLine[i]);
         }
-//        writeFile("cipher_text.txt");
+        System.out.println("...");
 
         System.out.println();
-        System.out.println("\n\n Если хотите поменять стиль дешифровки, нажмите \"y\"");
-        if (vvod.next().equals("y")) {
+        System.out.println("\n Если хочешь поменять стиль дешифровки, нажми \"y\"");
+        System.out.println("Если хочешь поменять символы местами в этой дешифровке, нажми \"r\"");
+        String y_or_r = vvod.next();
+        if (y_or_r.equals("y")) {
             speech_style_for_cryptoAnalysis(cryptoLine);
+        } else if (y_or_r.equals("r")) {
+            swap_symbol(cryptoLine);
         }
+
     }
 
     public static String toCrypto_noCase(String s) {
@@ -485,11 +349,6 @@ public class Main {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-//        System.out.println(s);
-//        System.out.println("\n\n\n\n");
-//        System.out.println(s.toLowerCase());
-
         return s;
     }
 
@@ -518,14 +377,14 @@ public class Main {
             s_original = readFile(s_user_file_path);
         } catch (Exception e) {
             System.out.println("Что-то пошло не так, скорее всего путь указан не верно.");
-            System.out.println("Попробуйте снова");
-            System.out.println("Введите путь до вашего текстового файла файла");
-            System.out.println("Пример: C:\\Users\\User\\Desktop\\name.txt");
+            System.out.println("Попробуй снова");
+            System.out.println("Введи путь до твоего текстового файла");
+            System.out.println("Вот пример: C:\\Users\\User\\Desktop\\name.txt");
             s_user_file_path = vv.next();
             try {
                 s_original = readFile(s_user_file_path);
             } catch (Exception ee) {
-                System.out.println("Что-то снова пошло не так, скорее всего путь введен не верно.");
+                System.out.print("Что-то снова пошло не так, скорее всего путь введен не верно. ");
                 System.out.println("Тогда открою свой файл");
                 s_original = readFile("original_text.txt");
             }
@@ -545,8 +404,8 @@ public class Main {
             }
         }
         if (shift < -40 || shift > 40) {
-            System.out.println("Извините, вы, видимо, слишком умны для этой программы. " +
-                    "Попробуйте пожалуйста снова.");
+            System.out.println("Извини, ты, видимо, слишком умен для этой программы. " +
+                    "Попробуй пожалуйста снова.");
             b = false;
         } else b = true;
         return b;
@@ -558,10 +417,10 @@ public class Main {
         String one_or_two = "";
         for (int i = 0; i < 2; i++) {
             System.out.println("Что-то снова пошло не так, скорее всего выбор не корректен.");
-            System.out.println("Попробуйте снова");
-            System.out.println("Каким способом вы хотите расшифровать текст?");
-            System.out.println("Если Brute force (брутфорс, поиск грубой силой) наберите \"1\"");
-            System.out.println("Если Криптоанализ на основе статистических данных наберите \"2\"");
+            System.out.println("Попробуй снова");
+            System.out.println("Каким способом ты хочешь расшифровать текст?");
+            System.out.println("Если Brute force (поиск грубой силой) - набери \"1\"");
+            System.out.println("Если Криптоанализ на основе статистических данных - набери \"2\"");
             one_or_two = vv.next();
             if (one_or_two.equals("1")) {
                 brutForse(cryptoLine);
@@ -572,14 +431,14 @@ public class Main {
             }
         }
         if (one_or_two.equals("1")) {
-            System.out.println("Выбран метод Brute force (брутфорс, поиск грубой силой)");
+            System.out.println("Выбран метод Brute force (поиск грубой силой)");
             brutForse(cryptoLine);
         } else if (one_or_two.equals("2")) {
             System.out.println("Выбран метод Криптоанализ на основе статистических данных");
             cryptoAnalysis(cryptoLine);
         } else {
-            System.out.println("Извините, вы, видимо, слишком умны для этой программы. " +
-                    "Попробуйте пожалуйста снова.");
+            System.out.println("Извини, ты, видимо, слишком умен для этой программы. " +
+                    "Попробуй пожалуйста снова.");
         }
     }
 
@@ -595,7 +454,7 @@ public class Main {
         String symbol_frequency_martian = " оеатнисрлвмдпкуяь.зы,бчгйжхюшэцщф-?:!ъё\"";
 
 
-        System.out.println("Выберите другие типы дешифровки по стилям речи:");
+        System.out.println("Выбери другие типы дешифровки по стилям речи:");
         System.out.println("0 - Простой стиль");
         System.out.println("1 - Научный стиль");
         System.out.println("2 - Публицистический стиль");
@@ -634,7 +493,25 @@ public class Main {
                 cryptoAnalysis(cryptoLine);
                 break;
             default:
-                System.out.println("\n Спасибо за внимание.");
+                System.out.println("\n Спасибо за внимание. Ты лучший!");
         }
+    }
+
+    public static void swap_symbol(String cryptoLine) {
+        Scanner vvod = new Scanner(System.in);
+
+        System.out.println("Введи заменяемый символ");
+        String swap_symbol_1 = vvod.next();
+        System.out.println("Введи, каким символом заменить");
+        String swap_symbol_2 = vvod.next();
+
+        for (int i = 0; i < mas_symbol_frequency.length; i++) {
+            if (mas_symbol_frequency[i].equals(swap_symbol_1)) {
+                mas_symbol_frequency[i] = swap_symbol_2;
+            } else if (mas_symbol_frequency[i].equals(swap_symbol_2)) {
+                mas_symbol_frequency[i] = swap_symbol_1;
+            }
+        }
+        cryptoAnalysis(cryptoLine);
     }
 }
