@@ -354,9 +354,12 @@ public class Main {
 
     public static void writeFile(String path) {
         //        Записываем строку в файл
+
         try (
+
                 FileWriter writer = new FileWriter(path, false)) {
             // запись всей строки
+            new FileWriter(path, false).close();
             writer.write(s_Crypto);
 
             // запись по символам
