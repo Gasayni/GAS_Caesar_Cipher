@@ -553,7 +553,7 @@ public class Main {
         //  !!! Пока на регистр не будем обращать внимание. Поэтому нужно все буквы перевести в нижний регистр
         s_user_style = s_user_style.toLowerCase();
 
-        //        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
+        // Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
         HashMap<String, Integer> map_letters_user_style = new HashMap<>();
         map_letters_user_style.put("а", 0);
         map_letters_user_style.put("б", 0);
@@ -611,15 +611,15 @@ public class Main {
         }
 
         //        Показать Мап отсортированный по убыванию
-        map_letters.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).
-                forEach(System.out::println); // или любой другой конечный метод
+//        map_letters.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).
+//                forEach(System.out::println); // или любой другой конечный метод
 
         String[] qw, wq, wqw;
         for (int i = 0; i < aAlphabet.size(); i++) {
 //      находим самый частый символ в Мап-е с частотой вхождения символов в тексте
             String max_symbol = map_letters_user_style.entrySet().stream().max(Map.Entry.comparingByValue()).toString();
 
-//      Убираем шелуху от "Optional[к=167]", нам нужна только цифра
+//      Убираем шелуху от "Optional[к=167]", нам нужна только буква
             qw = max_symbol.split("\\[");   // max_symbol = "Optional[к=167]"
             wq = qw[1].split("]");        // qw[1] = "к=167]"
             wqw = wq[0].split("=");         // wq[0] = "к=167"
