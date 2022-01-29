@@ -39,15 +39,14 @@ public class Main {
     static String s_Crypto = "";
     static int shift;
     static String s_original = "";
-    static boolean b = true;
     static String s_user_file_path = "";
 
     //  создадим список из букв и символов для дальнейшей работы
     static String s_alphabet = "абвгдеёжзийклмнопрстуфхцчшщьыъэюя.,\":-!? ";
-    static ArrayList<String> aAlphabet = new ArrayList<>(Arrays.asList(s_alphabet.split("")));
     static String symbol_frequency_easy = " оетасинмвлдркяып,бьйуч.жгзхюшщёэцф-?ъ!\":";
     static String symbol_frequency_user_style="";
     static String[] mas_symbol_frequency = symbol_frequency_easy.split("");
+    static ArrayList<String> aAlphabet = new ArrayList<>(Arrays.asList(s_alphabet.split("")));
     static HashMap<String, Integer> map_letters = new HashMap<>();
 
     public static void main(String[] args) {
@@ -180,18 +179,8 @@ public class Main {
         System.out.println("Не могу определить сдвиг, попробуй файл с большим текстом внутри");
     }
 
-    public static void cryptoAnalysis(String cryptoLine) {
-        Scanner vvod = new Scanner(System.in);
-
-        // Вообще хорошо было бы, чтобы программа сама подбирала последующие символы на основе популярных слов
-
-        // Есть предположение, что сбивается статистика потому что частота
-        // вхождения символов у каких-то одинаковая из-за этого путаница
-        // ПОДТВЕРДИЛОСЬ!!!    НУЖНО ИСПРАВИТЬ - либо текст побольше, либо дополнить условиями
-
-        // хорошо если пользователю будет дана возможность поменять символы самостоятельно
-
-
+    public static HashMap<String, Integer> map_frequency (String[] mas_cryptoLine){
+        HashMap<String, Integer> map_letters = new HashMap<>();
         //        Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
         map_letters.put("а", 0);
         map_letters.put("б", 0);
@@ -236,8 +225,7 @@ public class Main {
         map_letters.put(" ", 0);
 
         // нужно отсортировать полученный Мап по убыванию частоты вхождения, (чтобы первый элементы был максимальным по значению)
-        //  Разрезаем наш текст по символам
-        String[] mas_cryptoLine = cryptoLine.split("");                         // массив символов из текста
+
         //  записываем в Мап сколько раз встретился тот или иной символ в тексте
         for (String s : aAlphabet) {
             for (String value : mas_cryptoLine) {
@@ -246,6 +234,22 @@ public class Main {
                 }
             }
         }
+        return map_letters;
+    }
+
+    public static void cryptoAnalysis(String cryptoLine) {
+        Scanner vvod = new Scanner(System.in);
+
+        // Вообще хорошо было бы, чтобы программа сама подбирала последующие символы на основе популярных слов
+        // Есть предположение, что сбивается статистика потому что частота
+        // вхождения символов у каких-то одинаковая из-за этого путаница
+        // ПОДТВЕРДИЛОСЬ!!!    НУЖНО ИСПРАВИТЬ - либо текст побольше, либо дополнить условиями
+
+        // массив символов из текста
+        String[] mas_cryptoLine = cryptoLine.split("");
+        map_letters.putAll(map_frequency(mas_cryptoLine));
+
+
         String[] qw, wq, wqw;
         ArrayList<Integer> after_replace = new ArrayList<>();   // сюда будут заноситься символы, которые уже заменены
 //        after_replace.clear();
@@ -428,9 +432,8 @@ public class Main {
         if (shift < -40 || shift > 40) {
             System.out.println("Извини, ты, видимо, слишком умен для этой программы. " +
                     "Попробуй пожалуйста снова.");
-            b = false;
-        } else b = true;
-        return b;
+            return false;
+        } return true;
     }
 
     public static void three_try2(String cryptoLine) {
@@ -552,67 +555,17 @@ public class Main {
 
         //  !!! Пока на регистр не будем обращать внимание. Поэтому нужно все буквы перевести в нижний регистр
         s_user_style = s_user_style.toLowerCase();
-
-        // Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
-        HashMap<String, Integer> map_letters_user_style = new HashMap<>();
-        map_letters_user_style.put("а", 0);
-        map_letters_user_style.put("б", 0);
-        map_letters_user_style.put("в", 0);
-        map_letters_user_style.put("г", 0);
-        map_letters_user_style.put("д", 0);
-        map_letters_user_style.put("е", 0);
-        map_letters_user_style.put("ё", 0);
-        map_letters_user_style.put("ж", 0);
-        map_letters_user_style.put("з", 0);
-        map_letters_user_style.put("и", 0);
-        map_letters_user_style.put("й", 0);
-        map_letters_user_style.put("к", 0);
-        map_letters_user_style.put("л", 0);
-        map_letters_user_style.put("м", 0);
-        map_letters_user_style.put("н", 0);
-        map_letters_user_style.put("о", 0);
-        map_letters_user_style.put("п", 0);
-        map_letters_user_style.put("р", 0);
-        map_letters_user_style.put("с", 0);
-        map_letters_user_style.put("т", 0);
-        map_letters_user_style.put("у", 0);
-        map_letters_user_style.put("ф", 0);
-        map_letters_user_style.put("х", 0);
-        map_letters_user_style.put("ц", 0);
-        map_letters_user_style.put("ч", 0);
-        map_letters_user_style.put("ш", 0);
-        map_letters_user_style.put("щ", 0);
-        map_letters_user_style.put("ь", 0);
-        map_letters_user_style.put("ы", 0);
-        map_letters_user_style.put("ъ", 0);
-        map_letters_user_style.put("э", 0);
-        map_letters_user_style.put("ю", 0);
-        map_letters_user_style.put("я", 0);
-        map_letters_user_style.put(".", 0);
-        map_letters_user_style.put(",", 0);
-        map_letters_user_style.put("\"", 0);
-        map_letters_user_style.put(":", 0);
-        map_letters_user_style.put("-", 0);
-        map_letters_user_style.put("!", 0);
-        map_letters_user_style.put("?", 0);
-        map_letters_user_style.put(" ", 0);
-
         // Для этого нужно отсортировать полученный мап из (буква - частота вхождения)
 //        Разрезаем наш текст по символам
         String[] mas_user = s_user_style.split("");
-//        сколько раз встретился тот или иной символ в тексте
-        for (String s : aAlphabet) {
-            for (String value : mas_user) {
-                if (s.equals(value)) {
-                    map_letters_user_style.put(s,
-                            (map_letters_user_style.get(s) + 1));
-                }
-            }
-        }
 
-        //        Показать Мап отсортированный по убыванию
+        // Каждой букве нужно присвоить номер, для этого скорее всего лучше подойдет ArrayMap
+        HashMap<String, Integer> map_letters_user_style = new HashMap<>(map_frequency(mas_user));
+
+
+
 //        map_letters.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()).
-//                forEach(System.out::println); // или любой другой конечный метод
+//                forEach(System.out::println); // или любой другой конечный метод              //        Показать Мап отсортированный по убыванию
 
         String[] qw, wq, wqw;
         for (int i = 0; i < aAlphabet.size(); i++) {
@@ -628,7 +581,6 @@ public class Main {
 //        Теперь нам нужно удалить максимальную Map строку по ключу - для того чтобы потом найти следующую максимальную
             map_letters_user_style.remove(wqw[0]);
         }
-
         return symbol_frequency_user_style;
     }
 }
