@@ -299,7 +299,6 @@ public class Main {
         } else if (y_or_r.equals("r")) {
             swap_symbol(cryptoLine);
         }
-
     }
 
     public static String toCrypto_noCase(String s) {
