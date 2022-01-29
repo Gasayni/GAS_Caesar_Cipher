@@ -246,7 +246,6 @@ public class Main {
                 }
             }
         }
-
         String[] qw, wq, wqw;
         ArrayList<Integer> after_replace = new ArrayList<>();   // сюда будут заноситься символы, которые уже заменены
 //        after_replace.clear();
