@@ -31,6 +31,9 @@ package com.company;
 
 // Общая инфа занятия с 24.01.2022
 //      Спринг нужен для 95% работы
+//      Спринг core
+//      Спринг boot
+
 
 import java.io.*;
 import java.util.*;
@@ -103,6 +106,7 @@ public class Main {
             three_try2(cryptoLine);
         }
     }
+
 
 
     public static void brutForse(String cryptoLine) {
