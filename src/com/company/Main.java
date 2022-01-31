@@ -33,6 +33,7 @@ package com.company;
 //      Спринг нужен для 95% работы
 //      Спринг core
 //      Спринг boot
+// Свинг это оформление
 
 
 import java.util.*;
@@ -67,9 +68,11 @@ public class Main {
                     TryCatch_openFile.tryCatch_openFile();
                     System.out.println("Файл зашифрован и находится в корне программы " +
                             "под названием \"cipher_text.txt\"");
+                } else {
+                    s_original = ReadFile.readFile("original_text.txt");
                 }
+
             }
-            s_original = ReadFile.readFile("original_text.txt");
             //  Зашифруем текст файла
             s_Crypto = ToCrypto_noCase.toCrypto_noCase(s_original);
             WriteFile.writeFile("cipher_text.txt");
